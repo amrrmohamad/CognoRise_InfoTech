@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Converter</title>
+    <link rel="stylesheet" href="../static/css/body.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1>Currency Converter</h1>
+            <p>Convert between major currencies in real-time.</p>
+        </header>
+        
+        <main>
+            <section class="converter-card">
+                <div class="converter-form">
+                    <input type="number" id="amount" placeholder="Amount" required>
+                    
+                    <div class="currency-select">
+                        <select id="fromCurrency"></select>
+                        <span>to</span>
+                        <select id="toCurrency"></select>
+                    </div>
+
+                    <button id="convertBtn">Convert</button>
+                </div>
+                
+                <div id="loading" class="loading-indicator hidden">Fetching data...</div>
+                <div id="resultCard" class="result-card hidden">
+                    <p id="conversionResult"></p>
+                    <p><strong>Last Updated:</strong> <span id="lastUpdated"></span></p>
+                </div>
+            </section>
+            
+            <section id="newsSection" class="news-section hidden">
+                <h2>Currency News</h2>
+                <div id="newsArticles"></div>
+            </section>
+        </main>
+        
+        <footer>
+            <p>Powered by ExchangeRate-API | <a href="#">Dark Mode</a></p>
+        </footer>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            // Populate currencies on page load
+            $.get('https://v6.exchangerate-api.com/v6/YOUR_API_KEY/latest/USD', function(data) {
+                let currencies = Object.keys(data.conversion_rates);
+                currencies.forEach(function(currency) {
+                    $('#fromCurrency').append(`<option value="${currency}">${currency}</option>`);
+                    $('#toCurrency').append(`<option value="${currency}">${currency}</option>`);
+                });
+            });
+
+            // Convert currency
+            $('#convertBtn').click(function() {
+                let amount = $('#amount').val();
+                let fromCurrency = $('#fromCurrency').val();
+                let toCurrency = $('#toCurrency').val();
+
+                if (!amount || isNaN(amount)) {
+                    alert('Please enter a valid amount');
+                    return;
+                }
+
+                $('#loading').removeClass('hidden');
+
+                $.post('/convert', { amount: amount, fromCurrency: fromCurrency, toCurrency: toCurrency }, function(result) {
+                    $('#conversionResult').text(`${amount} ${result.from_currency} = ${result.converted_amount} ${result.to_currency}`);
+                    $('#lastUpdated').text(new Date().toLocaleString());
+                    $('#resultCard').removeClass('hidden');
+                    $('#loading').addClass('hidden');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
