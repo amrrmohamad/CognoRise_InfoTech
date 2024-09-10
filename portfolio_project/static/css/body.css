@@ -229,7 +229,7 @@ footer {
 }
 
 .language-select {
-    background-color: #252525;
+    background-color: #131212;
     color: #fff;
     padding: 10px;
     border: 1px solid #1d1d1d;
@@ -238,7 +238,7 @@ footer {
 }
 
 .language-select:hover {
-    background-color: #222222;
+    background-color: #000000;
 }
 
 .footer-content {
