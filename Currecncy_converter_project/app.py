@@ -1,34 +1,28 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, jsonify
 import requests
 
 app = Flask(__name__)
 
-API_KEY = 'YOUR_API_KEY'
-API_URL = f'https://v6.exchangerate-api.com/v6/{API_KEY}/latest/USD'
+# API keys and URLs
+EXCHANGE_RATE_API = f'https://v6.exchangerate-api.com/v6/7a4f285f93cd659f6d72a76e/latest/USD'
+NEWS_API = 'https://newsapi.org/v2/everything?q=currency&apiKey=7bc5819029f640ca8b6ba28158a090c1'
 
+# Route for the homepage
 @app.route('/')
-def index():
+def home():
     return render_template('index.html')
 
-@app.route('/convert', methods=['POST'])
-def convert():
-    amount = float(request.form.get('amount'))
-    from_currency = request.form.get('fromCurrency')
-    to_currency = request.form.get('toCurrency')
+# Route to get exchange rates
+@app.route('/get_rates')
+def get_rates():
+    response = requests.get(EXCHANGE_RATE_API)
+    return jsonify(response.json())
 
-    response = requests.get(f'https://v6.exchangerate-api.com/v6/{API_KEY}/pair/{from_currency}/{to_currency}')
-    data = response.json()
-
-    exchange_rate = data.get('conversion_rate')
-    converted_amount = amount * exchange_rate
-
-    result = {
-        'converted_amount': round(converted_amount, 2),
-        'from_currency': from_currency,
-        'to_currency': to_currency
-    }
-    
-    return jsonify(result)
+# Route to get currency news
+@app.route('/get_news')
+def get_news():
+    response = requests.get(NEWS_API)
+    return jsonify(response.json())
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -21,7 +21,8 @@ body {
     max-width: 1200px;
 }
 
-/* Header Styles */
+/* ============================================ Header Styles ========================================== */
+
 header {
     background-color: #ffffff;
     padding: 1rem 0;
@@ -58,7 +59,8 @@ header .nav-links a:hover {
     color: #00864e;
 }
 
-/* Hero Section */
+/* ============================================ Hero Section ========================================= */
+
 .hero {
     background: linear-gradient(to right, #111820, #00f891);
     color: white;
@@ -101,7 +103,8 @@ hr {
 }
 
 
-/* Sections */
+/* ============================================ Sections ================================== */
+
 section {
     padding: 60px 0;
 }
@@ -124,11 +127,11 @@ section h2 {
 }
 
 .project-card {
-    background: white;
+    background: rgb(231, 231, 231);
     margin: 20px;
     padding: 32px 20px;
     height: auto;
-    border-radius: 8px;
+    border-radius:20px 30%  /20px 20%  ;
     box-shadow: 0 4px 8px 4px rgba(0,0,0,0.1);
 }
 
@@ -136,7 +139,7 @@ section h2 {
     width: 100%;
     height: 400px;
     object-fit: contain;
-    border-radius: 8px;
+    border-radius: 50% ;
 }
 
 .project-card h3 {
@@ -144,9 +147,30 @@ section h2 {
     font-size: 1.5rem;
 }
 
+.project-card1 {
+    background: rgb(231, 231, 231);
+    margin: 20px;
+    padding: 32px 20px;
+    height: auto;
+    border-radius: 30% 20px / 20% 20px ;
+    box-shadow: 0 4px 8px 4px rgba(0,0,0,0.1);
+}
+
+.project-card1 img {
+    width: 100%;
+    height: 400px;
+    object-fit: contain;
+    border-radius: 50% ;
+}
+
+.project-card1 h3 {
+    margin: 10px 0;
+    font-size: 1.5rem;
+}
+
 .secondary-btn {
     display: block;
-    margin-top: 30px ;
+    margin: 30px auto;
     width: 160px;
     background-color: #1a73e8;
     color: white;
@@ -214,7 +238,8 @@ button:hover {
     background-color: #165abf;
 }
 
-/* Footer */
+/* =========================================== Footer ======================================== */
+
 footer {
     background: linear-gradient(to left, #111820, #00f891);
     color: #f1f1f1;
@@ -331,7 +356,8 @@ footer::before {
     background-size: cover;
 }
 
-/* Responsive Styles */
+/* ============================ Responsive Styles ============================= */
+
 @media (max-width: 768px) {
     header .nav-links {
         flex-direction: column;
