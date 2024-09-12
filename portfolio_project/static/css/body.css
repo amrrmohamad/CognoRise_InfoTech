@@ -218,7 +218,6 @@ input, textarea {
     min-width: 75%;
     margin: auto;
 	transition: .2s;
-    overflow: hidden;
 }
 
 input:active, textarea:active,
