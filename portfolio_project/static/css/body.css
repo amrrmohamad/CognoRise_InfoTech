@@ -100,10 +100,11 @@ header .nav-links a:hover {
 
 #header-hr {
     padding-bottom: 5px;
-    background: linear-gradient(to right, #111820, #52c092);
+    background: linear-gradient(to right, #000000, #52c092);
     border-radius: 5px;
     width: 98%;
     margin: 5px auto;
+    border: none;
 }
 
 #hr {
@@ -267,16 +268,16 @@ footer {
 }
 
 .language-select {
-    background-color: #131212;
-    color: #fff;
+    background-color: #ffffff;
+    color: #000000;
     padding: 10px;
-    border: 1px solid #1d1d1d;
+    border: 1px solid #ffffff;
     border-radius: 15px;
     font-weight: bold;
 }
 
 .language-select:hover {
-    background-color: #000000;
+    background-color: #dbdbdb;
 }
 
 .footer-content {
@@ -297,24 +298,18 @@ footer {
 .footer-social h4 {
     font-size: 20px;
     margin-bottom: 15px;
-    color: #000000;
+    color: #ffffff;
 }
 
 .footer-about h4 {
     font-size: 30px;
-    color: #000000;
-}
-
-.footer-about p {
-    font-size: 14px;
-    line-height: 1.6;
-    color: #000000;
+    color: #ffffff;
 }
 
 .footer-links a {
     display: block;
     margin: 8px 0;
-    color: #000000;
+    color: #ffffff;
     text-decoration: none;
     font-size: 14px;
     transition: color 0.3s ease;
@@ -341,7 +336,7 @@ footer {
 
 .footer-bottom {
     margin-top: 20px;
-    border-top: 1px solid #000000;
+    border-top: 1px solid #ffffff;
     padding-top: 20px;
     width: 100%;
     text-align: center;
@@ -349,7 +344,7 @@ footer {
 
 .footer-bottom p {
     font-size: 14px;
-    color: #000000;
+    color: #ffffff;
 }
 
 footer::before {
