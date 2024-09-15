@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Currency Converter</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='body.css') }}">
+    <link rel="stylesheet" href="../static/body.css">
 </head>
 <body>
     <div class="app-container">
@@ -18,9 +18,9 @@
                 <div class="converter-form">
                     <input type="number" id="amount" placeholder="Amount" required>
                     <div class="currency-select">
-                        <select id="fromCurrency"></select>
+                        <select id="Coun-Currency-from"></select>
                         <span>to</span>
-                        <select id="toCurrency"></select>
+                        <select id="Coun-Currency-to"></select>
                     </div>
                     <button id="convertBtn">Convert</button>
                 </div>
@@ -39,9 +39,10 @@
 
         <footer>
             <p>Powered by ExchangeRate-API</p>
+            <p>&copy; 2024 Amr Mohamad. All rights reserved, <a href="#"> Contact with us </a> </p>
         </footer>
     </div>
     
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="../static/script.js"></script>
 </body>
 </html>
