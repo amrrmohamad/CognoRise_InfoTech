@@ -26,7 +26,7 @@ header h1 {
 
 header p {
     text-align: center;
-    color: #afafaf;
+    color: #e6e3e3;
     font-size: 1.2rem;
 }
 
@@ -81,12 +81,12 @@ button:hover {
 
 .currency-select {
     display: inline-block;
-    width: 80%;
+    width: 20%;
     margin: auto;
 }
 
 #Coun-Currency-to, #Coun-Currency-from{
-    width: 60px;
+    width: 90px;
     margin: 0;
 }
 
