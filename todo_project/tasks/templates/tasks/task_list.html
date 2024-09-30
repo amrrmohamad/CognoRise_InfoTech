@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Professional To-Do List</title>
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+	<!-- Dragula CSS -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dragula/3.7.2/dragula.min.css" />
+	<style>
+		body {
+			background-color: #f4f7f9;
+		}
+
+		.card {
+			border: none;
+			opacity: 0;
+			transition: opacity 0.5s ease, transform 0.3s ease, box-shadow 0.3s ease;
+			transform: translateY(10px);
+		}
+
+		.card.show {
+			opacity: 1;
+			transform: translateY(0);
+		}
+
+		.card:hover {
+			box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+		}
+
+		.completed-task {
+			text-decoration: line-through;
+			color: gray;
+		}
+
+		.filter-btn {
+			margin-right: 10px;
+		}
+
+		.btn-primary {
+			background-color: #007bff;
+			border: none;
+		}
+
+		.btn-primary:hover {
+			background-color: #0056b3;
+		}
+
+		/* Dragging styles */
+		.gu-mirror {
+			position: absolute;
+			z-index: 9999;
+			opacity: 0.8;
+		}
+
+		.gu-transit {
+			opacity: 0.5;
+		}
+	</style>
+</head>
+
+<body>
+	<!-- Navbar -->
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<a class="navbar-brand" href="#">To-Do List</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+			aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item">
+					<a class="nav-link filter-btn" href="#" data-filter="all">All Tasks</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link filter-btn" href="#" data-filter="pending">Pending</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link filter-btn" href="#" data-filter="completed">Completed</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+
+	<!-- Task List -->
+	<div class="container mt-4">
+		<h2 class="mb-4 text-center">Manage Your Tasks</h2>
+
+		<!-- Form for Adding New Task -->
+		<form method="POST" action="{% url 'task-create' %}" class="mb-4">
+			{% csrf_token %}
+			<div class="form-group">
+				<input type="text" name="title" class="form-control" placeholder="Task title" required>
+			</div>
+			<div class="form-group">
+				<textarea name="description" class="form-control" placeholder="Task description" required></textarea>
+			</div>
+			<div class="form-group">
+				<input type="date" name="due_date" class="form-control" required>
+			</div>
+			<button type="submit" class="btn btn-primary">Add New Task</button>
+		</form>
+
+		<div class="row">
+			{% for task in tasks %}
+			<div class="col-md-6 col-lg-4 task-card" data-id="{{ task.id }}"
+				data-status="{% if task.completed %}completed{% else %}pending{% endif %}">
+				<div class="card mb-4 {% if task.completed %}completed-task{% endif %}">
+					<div class="card-body">
+						<h5 class="card-title">{{ task.title }}</h5>
+						<p class="card-text">{{ task.description }}</p>
+						<small class="text-muted">Due: {{ task.due_date }}</small>
+						<div class="custom-control custom-checkbox mt-3">
+							<input type="checkbox" class="custom-control-input" id="task-{{ task.id }}" {% if task.completed %}checked{% endif %} onclick="toggleStatus({ task.id })">
+							<label class="custom-control-label" for="task-{{ task.id }}">Completed</label>
+						</div>
+					</div>
+				</div>
+			</div>
+			{% empty %}
+			<div class="col-12">
+				<p class="text-center">No tasks available.</p>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+
+	<!-- Bootstrap and jQuery Scripts -->
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+	<!-- Dragula JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/dragula/3.7.2/dragula.min.js"></script>
+
+	<script>
+		// Initialize Dragula for task dragging
+		dragula([document.querySelector('.row')])
+			.on('drop', function (el, target, source, sibling) {
+				const taskIds = [];
+				$('.task-card').each(function () {
+					taskIds.push($(this).data('id'));
+				});
+
+				// Send updated order to server via AJAX
+				$.ajax({
+					url: '/update_task_order/',
+					method: 'POST',
+					data: {
+						'csrfmiddlewaretoken': '{{ csrf_token }}',
+						'task_order[]': taskIds
+					},
+					success: function (response) {
+						console.log('Task order updated.');
+					}
+				});
+			});
+
+		// Make sure tasks fade in on page load
+		setTimeout(function () {
+			$('.card').addClass('show');
+		}, 100);
+
+		// Filter tasks by status (pending/completed)
+		$('.filter-btn').on('click', function (e) {
+			e.preventDefault();
+			const filter = $(this).data('filter');
+			$('.task-card').each(function () {
+				if (filter === 'all' || $(this).data('status') === filter) {
+					$(this).fadeIn();
+				} else {
+					$(this).fadeOut();
+				}
+			});
+		});
+
+		// Toggle task status using AJAX (task completion)
+		window.toggleStatus = function (taskId) {
+			$.ajax({
+				url: `/toggle_task_status/${taskId}/`,
+				method: 'POST',
+				data: {
+					'csrfmiddlewaretoken': '{{ csrf_token }}'
+				},
+				success: function (response) {
+					location.reload(); // Reload the page to update task status
+				}
+			});
+		};
+	</script>
+</body>
+
+</html>
