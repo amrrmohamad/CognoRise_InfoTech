@@ -114,7 +114,7 @@
 						<p class="card-text">{{ task.description }}</p>
 						<small class="text-muted">Due: {{ task.due_date }}</small>
 						<div class="custom-control custom-checkbox mt-3">
-							<input type="checkbox" class="custom-control-input" id="task-{{ task.id }}" {% if task.completed %}checked{% endif %} onclick="toggleStatus({ task.id })">
+							<input type="checkbox" class="custom-control-input" id="task-{{ task.id }}" {% if task.completed %}checked{% endif %} onclick="toggleStatus({{ task.id }})">
 							<label class="custom-control-label" for="task-{{ task.id }}">Completed</label>
 						</div>
 					</div>
