@@ -189,7 +189,7 @@ section h2 {
 }
 
 /* Experience section */
-.experience-item{
+.experience-item ul {
     padding: 20px 0;
 }
 
@@ -242,7 +242,10 @@ input:hover, textarea:hover {
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    zoom: 1.1;
+    button:hover {
+        background-color: #165abf;
+        transform: scale(1.1); /* Replace 'zoom: 1.1;' with 'transform: scale(1.1);' */
+    }
 }
 
 button:hover {
